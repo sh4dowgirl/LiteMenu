@@ -18,36 +18,34 @@ public abstract class Menu implements IMenu {
         this.plugin = plugin;
     }
 
-    public final Menu setPlayer(Player player){
+    public Menu setPlayer(Player player){
         this.viewer = player;
         return this;
     }
 
-    public final void open() {
+    public void open() {
         if (viewer == null || inventory == null) return;
 
         Runnable openTask = () -> viewer.openInventory(inventory);
-        if (Bukkit.isPrimaryThread()) {
+        if (Bukkit.isPrimaryThread())
             openTask.run();
-        } else {
+        else
             Bukkit.getScheduler().runTask(plugin, openTask);
-        }
     }
 
     public abstract Menu compile();
 
-    public final void close(){
+    public void close(){
         if (viewer == null || viewer.getOpenInventory().getTopInventory() != inventory) return;
 
         Runnable openTask = () -> viewer.closeInventory();
-        if (Bukkit.isPrimaryThread()) {
+        if (Bukkit.isPrimaryThread())
             openTask.run();
-        } else {
+        else
             Bukkit.getScheduler().runTask(plugin, openTask);
-        }
     }
 
-    public final Inventory getCachedInventory(){
+    public Inventory getCachedInventory(){
         return inventory;
     }
 }
